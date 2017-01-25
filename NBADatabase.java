@@ -156,6 +156,8 @@ public class NBADatabase {
                 load(fileName);
             } catch (FileNotFoundException e) {
 
+            } catch (IOException ex){
+                ex.printStackTrace();
             }
         }
     }
@@ -229,7 +231,7 @@ public class NBADatabase {
                 e.printStackTrace();
             }
 
-            
+
         } else {
             file.createNewFile();
         }
