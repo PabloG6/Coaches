@@ -13,6 +13,8 @@ import java.util.Scanner;
 public class NBADatabase {
     private static String absolutePath = System.getProperty("user.dir");
 
+    private static ArrayList<String> list;
+
     public static void print_path() {
         System.out.println(absolutePath);
 
@@ -52,9 +54,7 @@ public class NBADatabase {
         private int season_loss;
         private int payoff_loss;
         private String capital_letters;
-        String fileName = "coaches_season.txt";
-        private URL path = NBADatabase.class.getResource(fileName);
-        private String finalPath = absolutePath + "/" + fileName;
+        String finalPath = "coaches_seasons.txt";
 
         public Coaches() {
 
@@ -114,7 +114,7 @@ public class NBADatabase {
 
 
         public void loadCoaches(String s) throws ArrayIndexOutOfBoundsException {
-            this.fileName = s;
+
 
             try {
                 load(s);
@@ -127,7 +127,7 @@ public class NBADatabase {
 
         public void bestCoach(String s) {
             // TODO: 1/24/2017 best coach printed
-            highest(finalPath, s);
+            System.out.println(highest(finalPath, s));
         }
 
         public void coachName(String s) {
@@ -315,7 +315,8 @@ public class NBADatabase {
             System.out.println("Please add a .txt to the end of your file");
             return;
         }
-        String p = absolutePath + "/" + s;
+
+        NBADatabase.list = new ArrayList<>();
 
         BufferedReader reader;
         File file = new File(s);
@@ -327,7 +328,7 @@ public class NBADatabase {
                 String line = reader.readLine();
                 while (line != null) {
                     line.replace(",", " ");
-                    System.out.println(line);
+                    list.add(line);
                     line = reader.readLine();
                 }
             } catch (IOException e) {
@@ -423,7 +424,9 @@ public class NBADatabase {
         File file = new File(f);
         int h = 0;
         ArrayList<String> values = new ArrayList<>();
+
         try {
+            file.createNewFile();
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             String line = bufferedReader.readLine();
 
@@ -440,6 +443,7 @@ public class NBADatabase {
             for (String s : values) {
                 String[] data = s.split(",");
                 int y = Integer.parseInt(data[4]);
+                System.out.println(data[4]);
                 if (y > h) {
                     h = y;
                 }
