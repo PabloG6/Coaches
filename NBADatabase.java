@@ -3,6 +3,7 @@ package NBADATABASe;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Array;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,6 +11,7 @@ import java.util.Scanner;
  * Created by Pablo on 1/23/2017.
  */
 public class NBADatabase {
+    private final static String absolutePath = System.getProperty("user.dir");
     public static class Queries {
         String key;
         String value;
@@ -43,7 +45,9 @@ public class NBADatabase {
         private int season_loss;
         private int payoff_loss;
         private String capital_letters;
-        String fileName = "coaches";
+        String fileName = "coaches_season.txt";
+        private URL path = NBADatabase.class.getResource(fileName);
+        private String finalPath = path.getPath();
 
         public Coaches() {
 
@@ -51,13 +55,13 @@ public class NBADatabase {
 
 
         public void addCoaches(String... parameters) {
-            add(fileName, parameters, true);
+            add(finalPath, parameters, true);
 
         }
 
         public void printCoaches() {
             //// TODO: 1/24/2017 open coaches.txt and print information to console
-            print(this.fileName);
+            print(this.finalPath);
 
         }
 
@@ -72,7 +76,7 @@ public class NBADatabase {
 
             }
 
-            File file = new File(fileName);
+            File file = new File(this.finalPath);
             try {
 
                 for(Queries q: queries) {
@@ -100,6 +104,7 @@ public class NBADatabase {
 
         public void loadCoaches(String s) throws ArrayIndexOutOfBoundsException {
             this.fileName = s;
+
             try {
                 load(s);
             } catch (FileNotFoundException e) {
@@ -111,11 +116,11 @@ public class NBADatabase {
 
         public void bestCoach(String s) {
             // TODO: 1/24/2017 best coach printed
-            highest(fileName, s);
+            highest(finalPath, s);
         }
 
         public void coachName(String s){
-            ArrayList<String> val = query(s, fileName);
+            ArrayList<String> val = query(s, finalPath);
             for (String values :
                     val) {
                 System.out.println(values);
@@ -132,28 +137,32 @@ public class NBADatabase {
         private String location;
         private String name;
         private String league;
-        private String fileName = "teams";
+        String fileName = "teams.txt";
+        private URL path = NBADatabase.class.getResource(fileName);
+        private String finalPath = path.getPath();
 
 
         public void addTeam(String[] parameters) {
             //// TODO: 1/24/2017 add team members and do regex checks
-            add(fileName, parameters, false);
+            add(finalPath, parameters, false);
 
         }
 
         public void printTeams() {
             //// TODO: 1/24/2017 print teams from database
-            print(this.fileName);
+            print(this.finalPath);
 
         }
 
         public void teamsByCity(String s) {
             //// TODO: 1/24/2017 print teams by city
-            query(fileName, s);
+            query(finalPath, s);
         }
 
         public void loadTeams(String fileName) {
             // TODO: 1/24/2017 load all teams
+
+
             this.fileName = fileName;
             try {
                 load(fileName);
@@ -169,7 +178,8 @@ public class NBADatabase {
     private static void add(String s, String[] parameters, boolean whichFile) {
 
         if(whichFile==true) {
-            if ((parameters.length!=8)){
+            if ((parameters.length!=9)){
+                System.out.println(parameters.length);
                 System.out.println("Please enter parameters in the form of ID SEASON FIRST_NAME LAST_NAME SEASON_WIN \n" +
                         "          SEASON_LOSS PLAYOFF_WIN PLAYOFF_LOSS TEAM ");
                 return;
@@ -177,7 +187,7 @@ public class NBADatabase {
 
         }
          else {
-            if(parameters.length!=4){
+            if(parameters.length!=5){
                 System.out.println("Please enter parameters in the form of ID LOCATION NAME LEAGUE");
                 return;
             }
@@ -190,11 +200,11 @@ public class NBADatabase {
             bufferedWriter = new BufferedWriter(fileWriter);
             StringBuilder builder = new StringBuilder();
             if (file.createNewFile()) {
-
-
+                builder.append('\n');
                 for (int i = 0; i < parameters.length; i++) {
                     String k = parameters[i];
                     builder.append(k);
+                    if(i!=parameters.length-1)
                     builder.append(",");
 
 
@@ -235,10 +245,14 @@ public class NBADatabase {
     }
 
     private static void load(String s) throws IOException {
+
         if(!s.contains(".txt")){
             System.out.println("Please add a .txt to the end of your file");
             return;
         }
+        String p = absolutePath+"/"+s;
+
+
         File file = new File(s);
         if (file.exists()) {
             BufferedReader reader = new BufferedReader(new FileReader(file));

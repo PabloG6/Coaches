@@ -66,6 +66,7 @@ public class P1 {
             } else if (cmd.getCommand().equals("load_coaches")) {
                 try {
                     coaches.loadCoaches(cmd.getParameters()[0]);
+                    coaches.loadCoaches(cmd.getParameters()[0]);
                 } catch (ArrayIndexOutOfBoundsException ex){
                     System.out.println("Please enter the name of the file you want to load");
                 }
