@@ -101,7 +101,7 @@ public class P1 {
                 break;
             } else if(cmd.getCommand().equals("print_path")) {
                 NBADatabase.print_path();
-                NBADatabase nbaDatabase = new NBADatabase();
+
 
             } else
              if (cmd.getCommand().equals("")) {
