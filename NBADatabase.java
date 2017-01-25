@@ -57,6 +57,7 @@ public class NBADatabase {
 
         public void printCoaches() {
             //// TODO: 1/24/2017 open coaches.txt and print information to console
+            print(this.fileName);
 
         }
 
@@ -103,6 +104,8 @@ public class NBADatabase {
                 load(s);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+            } catch(IOException ex){
+
             }
         }
 
