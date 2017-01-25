@@ -99,7 +99,14 @@ public class P1 {
             } else if (cmd.getCommand().equals("exit")) {
                 System.out.println("Leaving the database, goodbye!");
                 break;
-            } else if (cmd.getCommand().equals("")) {
+            } else if(cmd.getCommand().equals("print_path")) {
+                NBADatabase.print_path();
+                NBADatabase nbaDatabase = new NBADatabase();
+
+            } else
+             if (cmd.getCommand().equals("")) {
+                System.out.println("Please enter a valid command!");
+
             } else {
                 System.out.println("Invalid Command, try again!");
             }
