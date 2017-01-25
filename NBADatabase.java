@@ -51,7 +51,7 @@ public class NBADatabase {
 
 
         public void addCoaches(String... parameters) {
-            add(fileName, parameters);
+            add(fileName, parameters, true);
 
         }
 
@@ -137,7 +137,7 @@ public class NBADatabase {
 
         public void addTeam(String[] parameters) {
             //// TODO: 1/24/2017 add team members and do regex checks
-            add(fileName, parameters);
+            add(fileName, parameters, false);
 
         }
 
@@ -166,11 +166,26 @@ public class NBADatabase {
     }
 
 
-    private static void add(String s, String[] parameters) {
+    private static void add(String s, String[] parameters, boolean whichFile) {
+
+        if(whichFile==true) {
+            if ((parameters.length!=8)){
+                System.out.println("Please enter parameters in the form of ID SEASON FIRST_NAME LAST_NAME SEASON_WIN \n" +
+                        "          SEASON_LOSS PLAYOFF_WIN PLAYOFF_LOSS TEAM ");
+                return;
+            }
+
+        }
+         else {
+            if(parameters.length!=4){
+                System.out.println("Please enter parameters in the form of ID LOCATION NAME LEAGUE");
+                return;
+            }
+        }
         FileWriter fileWriter = null;
         BufferedWriter bufferedWriter = null;
         try {
-            File file = new File(s.concat(".txt"));
+            File file = new File(s);
              fileWriter = new FileWriter(file, true);
             bufferedWriter = new BufferedWriter(fileWriter);
             StringBuilder builder = new StringBuilder();
@@ -220,7 +235,11 @@ public class NBADatabase {
     }
 
     private static void load(String s) throws IOException {
-        File file = new File(s.concat("txt"));
+        if(!s.contains(".txt")){
+            System.out.println("Please add a .txt to the end of your file");
+            return;
+        }
+        File file = new File(s);
         if (file.exists()) {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             try {
@@ -243,8 +262,41 @@ public class NBADatabase {
     }
 
     private static void print(String a) {
+        File file = new File(a);
+        BufferedReader bufferedReader = null;
+        if(file.exists()){
+
+                try {
+                     bufferedReader = new BufferedReader(new FileReader(file));
+                    String line = bufferedReader.readLine();
+                    while(line!=null){
+                        System.out.println(line);
+                        line = bufferedReader.readLine();
+                    }
+
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                 finally {
+                    if(bufferedReader!=null)
+                        try {
+                            bufferedReader.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                }
+            } else {
+                System.out.println("File does not exist");
+
+            }
+
+
 
     }
+
 
     private static ArrayList<String> query(String query, String fileName) {
         File file = new File(fileName);
